@@ -27,9 +27,11 @@ class " . ucfirst($controller) . " extends CI_Controller
         parent::__construct();
         \$this->load->model('$model');
         \$this->load->library('form_validation');
-    }
+    }";
 
-    public function index()
+if ($jenistabel == 'regtable') {
+    
+$string .= "\n\n    public function index()
     {
         \$keyword = '';
         \$this->load->library('pagination');
@@ -85,9 +87,24 @@ class " . ucfirst($controller) . " extends CI_Controller
             'start' => \$start,
         );
         \$this->load->view('$list', \$data);
-    }
+    }";
+
+} else {
     
-    public function read(\$id) 
+$string .="\n\n    public function index()
+    {
+        \$$controller = \$this->" . $model . "->get_all();
+
+        \$data = array(
+            '" . $controller . "_data' => \$$controller
+        );
+
+        \$this->load->view('$list', \$data);
+    }";
+
+}
+    
+$string .= "\n\n    public function read(\$id) 
     {
         \$row = \$this->" . $model . "->get_by_id(\$id);
         if (\$row) {
