@@ -1,4 +1,4 @@
-# Codeigniter CRUD Generator by [harviacode.com](http://harviacode.com)#
+# Codeigniter CRUD Generator 1.1 by [harviacode.com](http://harviacode.com)#
 
 ## About : ##
 
