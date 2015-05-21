@@ -31,6 +31,7 @@ Please visit and like [harviacode.com](http://harviacode.com) for more info and 
 
 ## Update ##
 V.1.1 - 21 May 2015
+
 * Add custom controller name and custom model name
 * Add client side datatables
 
