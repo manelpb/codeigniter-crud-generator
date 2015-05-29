@@ -1,4 +1,6 @@
-# Codeigniter CRUD Generator by [harviacode.com](http://harviacode.com)#
+# Codeigniter CRUD Generator 1.1 by [harviacode.com](http://harviacode.com)#
+
+![crudgenerator.png](https://bitbucket.org/repo/587Kzp/images/1234663838-crudgenerator.png)
 
 ## About : ##
 
@@ -28,5 +30,11 @@ Please visit and like [harviacode.com](http://harviacode.com) for more info and 
 * On application/config/autoload.php, load database library, session library and url helper.
 * On application/config/config.php, set $config['index_page'] = '', $config['url_suffix'] = '.html' and $config['encryption_key'] = 'randomstring'
 * On application/config/database.php, set hostname, username, password and database
+
+## Update ##
+V.1.1 - 21 May 2015
+
+* Add custom controller name and custom model name
+* Add client side datatables
 
 **Copyright 2015 [harviacode.com](http://harviacode.com)**

@@ -30,7 +30,7 @@ $string = "<!doctype html>
         <h2 style=\"margin-top:0px\">".ucfirst($table)." List</h2>
         <div class=\"row\" style=\"margin-bottom: 10px\">
             <div class=\"col-md-4\">
-                <?php echo anchor(site_url('".$table."/create'),'Create', 'class=\"btn btn-primary\"'); ?>
+                <?php echo anchor(site_url('".$controller."/create'),'Create', 'class=\"btn btn-primary\"'); ?>
             </div>
             <div class=\"col-md-4 text-center\">
                 <div style=\"margin-top: 8px\" id=\"message\">
@@ -83,13 +83,13 @@ if (mysql_num_rows($result2) > 0)
     }
 }
 
-$string .= "\n\t\t\t<td>"
+$string .= "\n\t\t\t<td style=\"text-align:center\">"
         . "\n\t\t\t\t<?php "
-        . "\n\t\t\t\techo anchor(site_url('".$table."/read/'.$".$controller."->".$primary."),'Read'); "
+        . "\n\t\t\t\techo anchor(site_url('".$controller."/read/'.$".$controller."->".$primary."),'Read'); "
         . "\n\t\t\t\techo ' | '; "
-        . "\n\t\t\t\techo anchor(site_url('".$table."/update/'.$".$controller."->".$primary."),'Update'); "
+        . "\n\t\t\t\techo anchor(site_url('".$controller."/update/'.$".$controller."->".$primary."),'Update'); "
         . "\n\t\t\t\techo ' | '; "
-        . "\n\t\t\t\techo anchor(site_url('".$table."/delete/'.$".$controller."->".$primary."),'Delete','onclick=\"javasciprt: return confirm(\\'Are You Sure ?\\')\"'); "
+        . "\n\t\t\t\techo anchor(site_url('".$controller."/delete/'.$".$controller."->".$primary."),'Delete','onclick=\"javasciprt: return confirm(\\'Are You Sure ?\\')\"'); "
         . "\n\t\t\t\t?>"
         . "\n\t\t\t</td>";
 
