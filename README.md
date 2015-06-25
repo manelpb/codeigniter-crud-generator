@@ -1,10 +1,10 @@
-# Codeigniter CRUD Generator 1.1 by [harviacode.com](http://harviacode.com)#
+# Codeigniter CRUD Generator 1.2 by [harviacode.com](http://harviacode.com)#
 
 ![crudgenerator.png](https://bitbucket.org/repo/587Kzp/images/1234663838-crudgenerator.png)
 
 ## About : ##
 
-Codeigniter CRUD Generator is a simple tool to auto generate model, controller and view from your table. This tool will boost your writing code. This CRUD generator will make a complete CRUD operation, pagination, search, form* and form validation. This CRUD Generator using bootstrap 3 style. You still need to modify the result code for more customization.
+Codeigniter CRUD Generator is a simple tool to auto generate model, controller and view from your table. This tool will boost your writing code. This CRUD generator will make a complete CRUD operation, pagination, search, form*, form validation, export to excel and export to word. This CRUD Generator using bootstrap 3 style. You still need to modify the result code for more customization.
 
 *generate textarea and text input only
 
@@ -32,6 +32,12 @@ Please visit and like [harviacode.com](http://harviacode.com) for more info and 
 * On application/config/database.php, set hostname, username, password and database
 
 ## Update ##
+V.1.2 - 25 June 2015
+
+* Add custom target folder
+* Add export to excel
+* Add export to word
+
 V.1.1 - 21 May 2015
 
 * Add custom controller name and custom model name
