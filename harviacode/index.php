@@ -13,6 +13,8 @@ $list_res = '';
 $read_res = '';
 $form_res = '';
 $page_res = '';
+$excel_res = '';
+$word_res = '';
 
 if (isset($_POST['table'])) {
     // include connection 
@@ -32,6 +34,8 @@ if (isset($_POST['table'])) {
     $versici = $_POST['versici'];
     $jenistabel = $_POST['jenistabel'];
     $paginationConfig = isset($_POST['paginationConfig']) ? $_POST['paginationConfig'] : '';
+    $excel = isset($_POST['excel']) ? $_POST['excel'] : '';
+    $word = isset($_POST['word']) ? $_POST['word'] : '';
 
     // cek table in database
     if (mysql_num_rows(mysql_query("SHOW TABLES LIKE '" . $table . "'")) <> 1) {
@@ -41,6 +45,7 @@ if (isset($_POST['table'])) {
         // setting 
         $model = $model <> '' ? $model : $table . "_model";
         $controller = $controller <> '' ? $controller : $table;
+        $html = $table . "_html";
         $list = $table . "_list";
         $read = $table . "_read";
         $form = $table . "_form";
@@ -53,6 +58,7 @@ if (isset($_POST['table'])) {
             $model_file = ucfirst($model) . ".php";
             $controller_file = ucfirst($controller) . ".php";
         }
+        $html_file = $html . ".php";
         $list_file = $list . ".php";
         $read_file = $read . ".php";
         $form_file = $form . ".php";
@@ -70,6 +76,14 @@ if (isset($_POST['table'])) {
         
         if ($paginationConfig == 'create') {
             require 'lib/createConfigPagination.php';
+        }
+
+        if ($excel == 'create') {
+            require 'lib/createExportExcelHelper.php';
+        }
+        
+        if ($word == 'create') {
+            require 'lib/createViewListHtml.php';
         }
     }
 }
@@ -137,6 +151,22 @@ if (isset($_POST['table'])) {
                     </div>
                     <hr style="margin-bottom: 5px; margin-top: 5px">
                     <div class="checkbox">
+                        <?php $excel = isset($_POST['excel']) ? $_POST['excel'] : ''; ?>
+                        <label>
+                            <input type="checkbox" name="excel" value="create" <?php echo $excel == 'create' ? 'checked' : '' ?>>
+                            Export Excel
+                        </label>
+                    </div>
+                    <hr style="margin-bottom: 5px; margin-top: 5px">
+                    <div class="checkbox">
+                        <?php $word = isset($_POST['word']) ? $_POST['word'] : ''; ?>
+                        <label>
+                            <input type="checkbox" name="word" value="create" <?php echo $word == 'create' ? 'checked' : '' ?>>
+                            Export Word
+                        </label>
+                    </div>
+                    <hr style="margin-bottom: 5px; margin-top: 5px">
+                    <div class="checkbox">
                         <?php $def_page = isset($_POST['paginationConfig']) ? $_POST['paginationConfig'] : ''; ?>
                         <label>
                             <input type="checkbox" name="paginationConfig" value="create" <?php echo $def_page == 'create' ? 'checked' : '' ?>>
@@ -162,14 +192,16 @@ if (isset($_POST['table'])) {
                 echo $read_res;
                 echo $form_res;
                 echo $page_res;
+                echo $excel_res;
+                echo $word_res;
                 ?>
             </div>
             <div class="col-md-9">
-                <h3 style="margin-top: 0px">Codeigniter CRUD Generator 1.1 by <a target="_blank" href="http://harviacode.com">harviacode.com</a></h3>
+                <h3 style="margin-top: 0px">Codeigniter CRUD Generator 1.2 by <a target="_blank" href="http://harviacode.com">harviacode.com</a></h3>
                 <p><strong>About :</strong></p>
                 <p>
                     Codeigniter CRUD Generator is a simple tool to auto generate model, controller and view from your table. This tool will boost your
-                    writing code. This CRUD generator will make a complete CRUD operation, pagination, search, form* and form validation. 
+                    writing code. This CRUD generator will make a complete CRUD operation, pagination, search, form*, form validation, export to excel, and export to word. 
                     This CRUD Generator using bootstrap 3 style. You still need to modify the result code for more customization.
                 </p>
                 <small>* generate textarea and text input only</small>
@@ -201,12 +233,18 @@ if (isset($_POST['table'])) {
                 </ul>
                 <p><strong>Update</strong></p>
                 <ul>
+                    <li>V.1.2 - 25 June 2015
+                        <ul>
+                            <li>Add custom target folder</li>
+                            <li>Add export to excel</li>
+                            <li>Add export to word</li>
+                        </ul>
+                    </li>
                     <li>V.1.1 - 21 May 2015
                         <ul>
                             <li>Add custom controller name and custom model name</li>
                             <li>Add client side datatables</li>
                         </ul>
-
                     </li>
                 </ul>
 

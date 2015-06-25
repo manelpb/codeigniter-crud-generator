@@ -7,7 +7,7 @@ You may edit this code, but please do not remove original information. Thanks :D
 -->
 <?php
 
-$path = "../application/views/" . $form_file;
+$path = $target."views/" . $form_file;
 
 $createForm = fopen($path, "w") or die("Unable to open file!");
 
@@ -51,7 +51,7 @@ if (mysql_num_rows($result2) > 0)
 }
 $string .= "\n\t    <input type=\"hidden\" name=\"".$primary."\" value=\"<?php echo $".$primary."; ?>\" /> ";
 $string .= "\n\t    <button type=\"submit\" class=\"btn btn-primary\"><?php echo \$button ?></button> ";
-$string .= "\n\t    <a href=\"<?php echo site_url('".$controller."') ?>\" class=\"btn btn-default\">Cancel</button>";
+$string .= "\n\t    <a href=\"<?php echo site_url('".$controller."') ?>\" class=\"btn btn-default\">Cancel</a>";
 $string .= "\n\t</form>
     </body>
 </html>";

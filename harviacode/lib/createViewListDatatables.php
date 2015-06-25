@@ -7,7 +7,7 @@ You may edit this code, but please do not remove original information. Thanks :D
 -->
 <?php
 
-$path = "../application/views/" . $list_file;
+$path = $target."views/" . $list_file;
         
 $createList = fopen($path, "w") or die("Unable to open file!");
 
@@ -38,8 +38,14 @@ $string = "<!doctype html>
                 </div>
             </div>
             <div class=\"col-md-4 text-right\">
-                <?php echo anchor(site_url('".$controller."/create'), 'Create', 'class=\"btn btn-primary\"'); ?>
-            </div>
+                <?php echo anchor(site_url('".$controller."/create'), 'Create', 'class=\"btn btn-primary\"'); ?>";
+if ($excel == 'create') {
+    $string .= "\n\t\t<?php echo anchor(site_url('".$controller."/excel'), 'Excel', 'class=\"btn btn-primary\"'); ?>";
+}
+if ($word == 'create') {
+    $string .= "\n\t\t<?php echo anchor(site_url('".$controller."/word'), 'Word', 'class=\"btn btn-primary\"'); ?>";
+}
+$string .= "\n\t    </div>
         </div>
         <table class=\"table table-bordered table-striped\" id=\"mytable\">
             <thead>

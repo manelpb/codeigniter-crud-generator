@@ -7,7 +7,7 @@ You may edit this code, but please do not remove original information. Thanks :D
 -->
 <?php
 
-$path = "../application/controllers/" . $controller_file;
+$path = $target."controllers/" . $controller_file;
 
 $createController = fopen($path, "w") or die("Unable to open file!");
 
@@ -229,7 +229,7 @@ $string .= "\n\t    );
         }
     }
 
-    function _rules() 
+    public function _rules() 
     {";
 
 $result2 = mysql_query("SELECT COLUMN_NAME,COLUMN_KEY,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='$database' AND TABLE_NAME='$table' AND COLUMN_KEY <> 'PRI'");
@@ -243,10 +243,85 @@ if (mysql_num_rows($result2) > 0)
 }
 $string .= "\n\n\t\$this->form_validation->set_rules('$primary', '$primary', 'trim');";
 $string .= "\n\t\$this->form_validation->set_error_delimiters('<span class=\"text-danger\">', '</span>');
+    }";
+
+if ($excel == 'create') {
+    $string .= "\n\n    public function excel()
+    {
+        \$this->load->helper('exportexcel');
+        \$namaFile = \"$table.xls\";
+        \$judul = \"$table\";
+        \$tablehead = 2;
+        \$tablebody = 3;
+        \$nourut = 1;
+        //penulisan header
+        header(\"Pragma: public\");
+        header(\"Expires: 0\");
+        header(\"Cache-Control: must-revalidate, post-check=0,pre-check=0\");
+        header(\"Content-Type: application/force-download\");
+        header(\"Content-Type: application/octet-stream\");
+        header(\"Content-Type: application/download\");
+        header(\"Content-Disposition: attachment;filename=\" . \$namaFile . \"\");
+        header(\"Content-Transfer-Encoding: binary \");
+
+        xlsBOF();
+
+        xlsWriteLabel(0, 0, \$judul);
+
+        \$kolomhead = 0;
+        xlsWriteLabel(\$tablehead, \$kolomhead++, \"no\");";
+
+$result2 = mysql_query("SELECT COLUMN_NAME,COLUMN_KEY,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='$database' AND TABLE_NAME='$table' AND COLUMN_KEY <> 'PRI'");
+if (mysql_num_rows($result2) > 0)
+{
+    while ($row2 = mysql_fetch_assoc($result2))
+    {
+        $namakolom = $row2['COLUMN_NAME'];
+        $string .= "\n\txlsWriteLabel(\$tablehead, \$kolomhead++, \"$namakolom\");";
     }
 }
 
-/* End of file $controller_file */
+$string .= "\n\n\tforeach (\$this->" . $model . "->get_all() as \$data) {
+            \$kolombody = 0;
+
+            //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
+            xlsWriteNumber(\$tablebody, \$kolombody++, \$nourut);";
+$result2 = mysql_query("SELECT COLUMN_NAME,COLUMN_KEY,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='$database' AND TABLE_NAME='$table' AND COLUMN_KEY <> 'PRI'");
+if (mysql_num_rows($result2) > 0)
+{
+    while ($row2 = mysql_fetch_assoc($result2))
+    {
+        $namakolom = $row2['COLUMN_NAME'];
+        $xlsWrite = $row2['DATA_TYPE'] == 'int' || $row2['DATA_TYPE'] == 'double' || $row2['DATA_TYPE'] == 'decimal' ? 'xlsWriteNumber' : 'xlsWriteLabel';
+        $string .= "\n\t    " . $xlsWrite . "(\$tablebody, \$kolombody++, \$data->$namakolom);";
+    }
+}
+
+$string .= "\n\n\t    \$tablebody++;
+            \$nourut++;
+        }
+
+        xlsEOF();
+        exit();
+    }";
+}
+
+if ($word == 'create') {
+    $string .= "\n\n    public function word()
+    {
+        header(\"Content-type: application/vnd.ms-word\");
+        header(\"Content-Disposition: attachment;Filename=$table.doc\");
+
+        \$data = array(
+            '" . $table . "_data' => \$this->" . $model . "->get_all(),
+            'start' => 0
+        );
+        
+        \$this->load->view('" . $table . "_html',\$data);
+    }";
+}
+
+$string .= "\n\n};\n\n/* End of file $controller_file */
 /* Location: ./application/controllers/$controller_file */";
 
 

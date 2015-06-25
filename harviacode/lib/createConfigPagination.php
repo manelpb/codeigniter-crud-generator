@@ -7,7 +7,7 @@ You may edit this code, but please do not remove original information. Thanks :D
 -->
 <?php
 
-$path = "../application/config/pagination.php";
+$path = $target."config/pagination.php";
         
 $createList = fopen($path, "w") or die("Unable to open file!");
 

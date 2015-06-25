@@ -7,7 +7,7 @@ You may edit this code, but please do not remove original information. Thanks :D
 -->
 <?php
 
-$path = "../application/models/" . $model_file;
+$path = $target."models/" . $model_file;
         
 $createModel = fopen($path, "w") or die("Unable to open file!");
 

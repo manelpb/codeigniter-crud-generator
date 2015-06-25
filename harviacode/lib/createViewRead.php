@@ -7,7 +7,7 @@ You may edit this code, but please do not remove original information. Thanks :D
 -->
 <?php
 
-$path = "../application/views/" . $read_file;
+$path = $target."views/" . $read_file;
 
 $createRead = fopen($path, "w") or die("Unable to open file!");
 
