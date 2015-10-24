@@ -37,6 +37,16 @@ if (isset($_POST['table'])) {
     $excel = isset($_POST['excel']) ? $_POST['excel'] : '';
     $word = isset($_POST['word']) ? $_POST['word'] : '';
 
+    $target = isset($_POST['pathOutput']) ? $_POST['pathOutput'] ."/": "../application/";
+
+    $models = isset($_POST['models']) ? $_POST['models'] : '';
+    $controllers = isset($_POST['controllers']) ? $_POST['controllers'] : '';
+    $views = isset($_POST['views']) ? $_POST['views'] : '';
+
+
+    $headers = isset($_POST['headers']) ? $_POST['headers'] : false;
+    $footers = isset($_POST['footers']) ? $_POST['footers'] : false;
+
     // cek table in database
     if (mysql_num_rows(mysql_query("SHOW TABLES LIKE '" . $table . "'")) <> 1) {
         // show error
@@ -63,15 +73,22 @@ if (isset($_POST['table'])) {
         $read_file = $read . ".php";
         $form_file = $form . ".php";
 
-        require 'lib/createModel.php';
-        require 'lib/createController.php';
-        require 'lib/createViewForm.php';
-        require 'lib/createViewRead.php';
+        if($models)
+            require 'lib/createModel.php';
 
-        if ($jenistabel == 'regtable') {
-            require 'lib/createViewList.php';
-        } else {
-            require 'lib/createViewListDatatables.php';
+        if($controllers)
+            require 'lib/createController.php';
+
+        if($views) { 
+            require 'lib/createViewForm.php';
+            require 'lib/createViewRead.php';
+
+            if ($jenistabel == 'regtable') {
+                require 'lib/createViewList.php';
+            } else {
+                require 'lib/createViewListDatatables.php';
+            }
+
         }
         
         if ($paginationConfig == 'create') {
@@ -156,13 +173,40 @@ if (isset($_POST['table'])) {
                             <input type="checkbox" name="excel" value="create" <?php echo $excel == 'create' ? 'checked' : '' ?>>
                             Export Excel
                         </label>
-                    </div>
-                    <hr style="margin-bottom: 5px; margin-top: 5px">
-                    <div class="checkbox">
+
                         <?php $word = isset($_POST['word']) ? $_POST['word'] : ''; ?>
                         <label>
                             <input type="checkbox" name="word" value="create" <?php echo $word == 'create' ? 'checked' : '' ?>>
                             Export Word
+                        </label>
+                    </div>
+                    <hr style="margin-bottom: 5px; margin-top: 5px">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="controllers" value="1" <?php echo isset($_POST['controllers']) ? 'checked' : '' ?>>
+                            Controller
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="models" value="1" <?php echo isset($_POST['models']) ? 'checked' : '' ?>>
+                            Model
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="views" value="1" <?php echo isset($_POST['views']) ? 'checked' : '' ?>>
+                            View
+                        </label>
+                    </div>
+                    <hr style="margin-bottom: 5px; margin-top: 5px">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="headers" value="1" <?php echo isset($_POST['headers']) ? 'checked' : '' ?>>
+                            Header
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="footers" value="1" <?php echo isset($_POST['footers']) ? 'checked' : '' ?>>
+                            Footer
                         </label>
                     </div>
                     <hr style="margin-bottom: 5px; margin-top: 5px">
@@ -174,6 +218,12 @@ if (isset($_POST['table'])) {
                         </label>
                     </div>
                     <hr style="margin-bottom: 10px; margin-top: 10px">
+
+                    <div class="form-group">
+                        <label>Path output</label>
+                        <input type="text" name="pathOutput" value="<?php echo isset($_POST['pathOutput']) ? $_POST['pathOutput'] : '' ?>" class="form-control" placeholder="Output files" />
+                    </div>
+
                     <div class="form-group">
                         <label>Custom Controller Name</label>
                         <input type="text" id="controller" name="controller" value="<?php echo isset($_POST['controller']) ? $_POST['controller'] : '' ?>" class="form-control" placeholder="Controller Name" />
@@ -182,7 +232,7 @@ if (isset($_POST['table'])) {
                         <label>Custom Model Name</label>
                         <input type="text" id="model" name="model" value="<?php echo isset($_POST['model']) ? $_POST['model'] : '' ?>" class="form-control" placeholder="Controller Name" />
                     </div>
-                    <input type="submit" value="Generate" name="generate" class="btn btn-primary" onclick="javascript: return confirm('This will overwrite the existing files. Continue ?')" />
+                    <input type="submit" value="Generate" name="generate" class="btn btn-primary" />
                 </form>
                 <?php
                 echo $table_error;

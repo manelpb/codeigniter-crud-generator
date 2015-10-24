@@ -15,7 +15,10 @@ $result2 = mysql_query("SELECT COLUMN_NAME,COLUMN_KEY FROM INFORMATION_SCHEMA.CO
 $row = mysql_fetch_assoc($result2);
 $primary = $row['COLUMN_NAME'];
 
-$string = "<!doctype html>
+$string = "";
+
+if($headers) { 
+    $string = "<!doctype html>
 <html>
     <head>
         <title>harviacode.com - codeigniter crud generator</title>
@@ -26,7 +29,10 @@ $string = "<!doctype html>
             }
         </style>
     </head>
-    <body>
+    <body>";
+}
+
+$string .= "
         <h2 style=\"margin-top:0px\">".ucfirst($table)." List</h2>
         <div class=\"row\" style=\"margin-bottom: 10px\">
             <div class=\"col-md-4\">
@@ -61,7 +67,10 @@ if (mysql_num_rows($result2) > 0)
 {
     while ($row1 = mysql_fetch_assoc($result2))
     {
-        $string .= "\n\t\t<th>" . $row1['COLUMN_NAME'] . "</th>";
+        $displayName = explode("_", $row1["COLUMN_NAME"]);
+
+        
+        $string .= "\n\t\t<th>" . $displayName[1] . "</th>";
     }
 }
 $string .= "\n\t\t<th>Action</th>
@@ -111,9 +120,15 @@ $string .= "\n\t    </div>
             <div class=\"col-md-6 text-right\">
                 <?php echo \$pagination ?>
             </div>
-        </div>
+        </div>";
+
+
+if($footer) {
+    $string .= "
     </body>
 </html>";
+}
+
 
 
 fwrite($createList, $string);

@@ -15,6 +15,8 @@ $result2 = mysql_query("SELECT COLUMN_NAME,COLUMN_KEY FROM INFORMATION_SCHEMA.CO
 $row = mysql_fetch_assoc($result2);
 $primary = $row['COLUMN_NAME'];
 
+$string = "";
+
 $string = "<!doctype html>
 <html>
     <head>

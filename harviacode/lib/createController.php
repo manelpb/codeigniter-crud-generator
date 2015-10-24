@@ -232,13 +232,17 @@ $string .= "\n\t    );
     public function _rules() 
     {";
 
-$result2 = mysql_query("SELECT COLUMN_NAME,COLUMN_KEY,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='$database' AND TABLE_NAME='$table' AND COLUMN_KEY <> 'PRI'");
+$result2 = mysql_query("SELECT IS_NULLABLE, COLUMN_NAME,COLUMN_KEY,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='$database' AND TABLE_NAME='$table' AND COLUMN_KEY <> 'PRI'");
 if (mysql_num_rows($result2) > 0)
 {
     while ($row3 = mysql_fetch_assoc($result2))
     {
         $int = $row3['DATA_TYPE'] == 'int' || $row3['DATA_TYPE'] == 'double' || $row3['DATA_TYPE'] == 'decimal' ? '|numeric' : '';
-        $string .= "\n\t\$this->form_validation->set_rules('".$row3['COLUMN_NAME']."', ' ', 'trim|required$int');";
+
+        if($row3["IS_NULLABLE"] == "NO")
+            $string .= "\n\t\$this->form_validation->set_rules('".$row3['COLUMN_NAME']."', ' ', 'trim|required$int');";
+        else
+            $string .= "\n\t\$this->form_validation->set_rules('".$row3['COLUMN_NAME']."', ' ', 'trim');";
     }
 }
 $string .= "\n\n\t\$this->form_validation->set_rules('$primary', '$primary', 'trim');";

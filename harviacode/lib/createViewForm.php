@@ -15,7 +15,10 @@ $result2 = mysql_query("SELECT COLUMN_NAME,COLUMN_KEY FROM INFORMATION_SCHEMA.CO
 $row = mysql_fetch_assoc($result2);
 $primary = $row['COLUMN_NAME'];
 
-$string = "<!doctype html>
+$string = "";
+
+if($headers) { 
+    $string = "<!doctype html>
 <html>
     <head>
         <title>harviacode.com - codeigniter crud generator</title>
@@ -26,25 +29,30 @@ $string = "<!doctype html>
             }
         </style>
     </head>
-    <body>
-        <h2 style=\"margin-top:0px\">".ucfirst($table)." <?php echo \$button ?></h2>
+    <body>";
+}
+
+$string .= "<h2 style=\"margin-top:0px\">".ucfirst($table)." <?php echo \$button ?></h2>
         <form action=\"<?php echo \$action; ?>\" method=\"post\">";
 $result2 = mysql_query("SELECT COLUMN_NAME,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='$database' AND TABLE_NAME='$table' AND COLUMN_KEY <> 'PRI'");
 if (mysql_num_rows($result2) > 0)
 {
     while ($row1 = mysql_fetch_assoc($result2))
     {
+
+        $displayName = explode("_", $row1["COLUMN_NAME"]);
+
         if ($row1["DATA_TYPE"] == 'text')
         {
         $string .= "\n\t    <div class=\"form-group\">
-                <label for=\"".$row1["COLUMN_NAME"]."\">".$row1["COLUMN_NAME"]." <?php echo form_error('".$row1["COLUMN_NAME"]."') ?></label>
-                <textarea class=\"form-control\" rows=\"3\" name=\"".$row1["COLUMN_NAME"]."\" id=\"".$row1["COLUMN_NAME"]."\" placeholder=\"".$row1["COLUMN_NAME"]."\"><?php echo $".$row1["COLUMN_NAME"]."; ?></textarea>
+                <label for=\"".$row1["COLUMN_NAME"]."\">".$displayName[1]." <?php echo form_error('".$row1["COLUMN_NAME"]."') ?></label>
+                <textarea class=\"form-control\" rows=\"3\" name=\"".$row1["COLUMN_NAME"]."\" id=\"".$row1["COLUMN_NAME"]."\" placeholder=\"".$displayName[1]."\"><?php echo $".$row1["COLUMN_NAME"]."; ?></textarea>
             </div>";
         } else
         {
         $string .= "\n\t    <div class=\"form-group\">
-                <label for=\"".$row1["DATA_TYPE"]."\">".$row1["COLUMN_NAME"]." <?php echo form_error('".$row1["COLUMN_NAME"]."') ?></label>
-                <input type=\"text\" class=\"form-control\" name=\"".$row1["COLUMN_NAME"]."\" id=\"".$row1["COLUMN_NAME"]."\" placeholder=\"".$row1["COLUMN_NAME"]."\" value=\"<?php echo $".$row1["COLUMN_NAME"]."; ?>\" />
+                <label for=\"".$row1["DATA_TYPE"]."\">".$displayName[1]." <?php echo form_error('".$row1["COLUMN_NAME"]."') ?></label>
+                <input type=\"text\" class=\"form-control\" name=\"".$row1["COLUMN_NAME"]."\" id=\"".$row1["COLUMN_NAME"]."\" placeholder=\"".$displayName[1]."\" value=\"<?php echo $".$row1["COLUMN_NAME"]."; ?>\" />
             </div>";
         }
     }
@@ -52,9 +60,13 @@ if (mysql_num_rows($result2) > 0)
 $string .= "\n\t    <input type=\"hidden\" name=\"".$primary."\" value=\"<?php echo $".$primary."; ?>\" /> ";
 $string .= "\n\t    <button type=\"submit\" class=\"btn btn-primary\"><?php echo \$button ?></button> ";
 $string .= "\n\t    <a href=\"<?php echo site_url('".$controller."') ?>\" class=\"btn btn-default\">Cancel</a>";
-$string .= "\n\t</form>
+$string .= "\n\t</form>";
+
+if($footer) {
+    $string .= "
     </body>
 </html>";
+}
 
 
 fwrite($createForm, $string);
